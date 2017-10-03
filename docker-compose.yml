@@ -1,0 +1,35 @@
+version: '3.2'
+
+services:
+
+  wordpress:
+    image: wordpress:latest
+    depends_on:
+      - db
+    ports:
+      - 8000:80
+    restart: always
+    environment:
+      WORDPRESS_DB_USER: sos-user
+      WORDPRESS_DB_PASSWORD: q1w2e3r4
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: sos
+    volumes:
+      - ./docker/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - ./:/var/www/html
+
+  db:
+    image: mysql:5.7
+    ports:
+      - 3389:3306
+    volumes:
+      - ./db:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootoor
+      MYSQL_DATABASE: sos
+      MYSQL_USER: sos-user
+      MYSQL_PASSWORD: q1w2e3r4
+
+# volumes:
+#   db_data:
